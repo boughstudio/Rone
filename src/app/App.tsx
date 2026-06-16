@@ -953,14 +953,12 @@ export default function App() {
                 </button>
               )}
             </div>
-            <Tooltip label="Settings" enabled={settings.showTooltips}>
-              <button
-                onClick={() => setSettingsOpen(true)}
-                className={`p-1.5 rounded-lg transition-colors ${settingsOpen ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
-              >
-                <SettingsIcon className="size-4" />
-              </button>
-            </Tooltip>
+            <button
+              onClick={() => setSettingsOpen(true)}
+              className={`p-1.5 rounded-lg transition-colors ${settingsOpen ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
+            >
+              <SettingsIcon className="size-4" />
+            </button>
           </div>
         </div>
 
@@ -1539,8 +1537,8 @@ export default function App() {
               </div>
             ) : (
             <div className="flex flex-col gap-4 lg:gap-6">
-            <div className="bg-card rounded-xl p-4 lg:p-6 border border-border">
-              <div className="flex flex-wrap items-center justify-between gap-y-3 mb-4 lg:mb-6">
+            <div className={`bg-card rounded-xl border border-border ${compact ? "p-3 lg:p-4" : "p-4 lg:p-6"}`}>
+              <div className={`flex flex-wrap items-center justify-between gap-y-3 ${compact ? "mb-3 lg:mb-4" : "mb-4 lg:mb-6"}`}>
                 <h2 className="text-lg font-semibold text-foreground">Calendar <span className="text-sm font-normal text-muted-foreground">· {calendarView === "month" ? "Month" : "Week"}</span></h2>
                 <div className="flex flex-wrap items-center gap-3">
                   <div className="flex items-center bg-background rounded-lg p-1">
@@ -1713,18 +1711,18 @@ export default function App() {
                       const dateEvents = showEvents ? getDateEvents(day) : [];
                       const totalItems = dateEvents.length + dateTasks.length;
                       return (
-                        <div key={day} onClick={e => { e.stopPropagation(); setSelectedProjectId(null); setSelectedDay(isSelected ? null : day); }} className={`${compact ? "min-h-16 p-1" : "min-h-24 p-1.5"} rounded-lg transition-colors cursor-pointer border ${isSelected ? "ring-2 ring-primary bg-muted/30 border-border" : isToday ? "bg-card border-2 border-black" : "border-border hover:bg-muted/50"}`}>
-                          <div className="text-sm font-semibold mb-1 text-foreground">{day}</div>
-                          <div className="space-y-1">
-                            {dateEvents.slice(0, 3).map((event, idx) => (
+                        <div key={day} onClick={e => { e.stopPropagation(); setSelectedProjectId(null); setSelectedDay(isSelected ? null : day); }} className={`${compact ? "min-h-14 p-1" : "min-h-24 p-1.5"} rounded-lg transition-colors cursor-pointer border ${isSelected ? "ring-2 ring-primary bg-muted/30 border-border" : isToday ? "bg-card border-2 border-black" : "border-border hover:bg-muted/50"}`}>
+                          <div className={`${compact ? "text-xs mb-0.5" : "text-sm mb-1"} font-semibold text-foreground`}>{day}</div>
+                          <div className="space-y-0.5">
+                            {dateEvents.slice(0, compact ? 4 : 3).map((event, idx) => (
                               <div key={`ev-${idx}`} className="flex items-center rounded-[2px] bg-card overflow-hidden" title={event.title}>
                                 <div className="w-1 self-stretch flex-shrink-0 rounded-full bg-foreground/40" />
-                                <div className="px-1 py-0.5 min-w-0">
+                                <div className={`px-1 ${compact ? "py-0" : "py-0.5"} min-w-0`}>
                                   <div className="text-xs font-medium text-foreground truncate">{event.title}</div>
                                 </div>
                               </div>
                             ))}
-                            {dateTasks.slice(0, Math.max(0, 3 - dateEvents.length)).map(({ task, project }, idx) => {
+                            {dateTasks.slice(0, Math.max(0, (compact ? 4 : 3) - dateEvents.length)).map(({ task, project }, idx) => {
                               const taskOverdue = task.status !== "done" && (
                                 (task.dateType === "due" && !!task.dueDate && task.dueDate < todayIso) ||
                                 (task.dateType === "range" && !!task.endDate && task.endDate < todayIso)
@@ -1733,16 +1731,16 @@ export default function App() {
                               return (
                                 <div key={idx} className="flex items-center rounded-[2px] bg-card overflow-hidden" title={task.title}>
                                   <div className="w-1 self-stretch flex-shrink-0 rounded-full" style={{ backgroundColor: accentColor }} />
-                                  <div className="px-1 py-0.5 min-w-0">
-                                    {taskOverdue && <div className="text-xs text-destructive truncate">Overdue</div>}
-                                    <div className={`text-sm font-medium truncate ${task.status === "done" ? "line-through text-muted-foreground" : "text-foreground"}`}>{task.title}</div>
-                                    {project && <div className="text-xs text-muted-foreground truncate">{project.name}</div>}
+                                  <div className={`px-1 ${compact ? "py-0" : "py-0.5"} min-w-0`}>
+                                    {taskOverdue && !compact && <div className="text-xs text-destructive truncate">Overdue</div>}
+                                    <div className={`${compact ? "text-xs" : "text-sm"} font-medium truncate ${task.status === "done" ? "line-through text-muted-foreground" : taskOverdue ? "text-destructive" : "text-foreground"}`}>{task.title}</div>
+                                    {project && !compact && <div className="text-xs text-muted-foreground truncate">{project.name}</div>}
                                   </div>
                                 </div>
                               );
                             })}
-                            {totalItems > 3 && (
-                              <div className="text-xs text-muted-foreground px-1">+{totalItems - 3} more</div>
+                            {totalItems > (compact ? 4 : 3) && (
+                              <div className="text-xs text-muted-foreground px-1">+{totalItems - (compact ? 4 : 3)} more</div>
                             )}
                           </div>
                         </div>
