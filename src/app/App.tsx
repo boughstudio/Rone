@@ -80,23 +80,14 @@ const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
+// ── Version ───────────────────────────────────────────────────────────────────
+
+const CURRENT_VERSION = "1.0.0";
+
 // ── Seed data ────────────────────────────────────────────────────────────────
 
-const seedProjects: Project[] = [
-  { id: "1", name: "Website Redesign",    color: "#D4E157", startDate: "2026-05-01", endDate: "2026-06-30" },
-  { id: "2", name: "Mobile App",          color: "#81C784", startDate: "2026-05-15", endDate: "2026-07-31" },
-  { id: "3", name: "Brand Guidelines",    color: "#64B5F6", startDate: "2026-04-01", endDate: "2026-06-04" },
-  { id: "4", name: "Marketing Campaign",  color: "#FFB74D", startDate: "2026-06-01", endDate: "2026-06-30" },
-];
-
-const seedTasks: Task[] = [
-  { id: "1", title: "Design homepage mockup",       projectId: "1", status: "todo", dateType: "due",   dueDate: "2026-06-05", startDate: "", endDate: "" },
-  { id: "2", title: "Implement authentication",     projectId: "2", status: "todo", dateType: "range", dueDate: "", startDate: "2026-06-06", endDate: "2026-06-10" },
-  { id: "3", title: "Review final deliverables",    projectId: "3", status: "done", dateType: "due",   dueDate: "2026-06-04", startDate: "", endDate: "" },
-  { id: "4", title: "Create social media assets",   projectId: "4", status: "todo", dateType: "none",  dueDate: "", startDate: "", endDate: "" },
-  { id: "5", title: "User testing session",          projectId: "1", status: "todo", dateType: "due",   dueDate: "2026-06-08", startDate: "", endDate: "" },
-  { id: "6", title: "Database schema optimization", projectId: "2", status: "todo", dateType: "range", dueDate: "", startDate: "2026-06-09", endDate: "2026-06-12" },
-];
+const seedProjects: Project[] = [];
+const seedTasks: Task[] = [];
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -234,6 +225,18 @@ export default function App() {
   useEffect(() => { localStorage.setItem('planner:projects', JSON.stringify(projects)); }, [projects]);
   useEffect(() => { localStorage.setItem('planner:tasks', JSON.stringify(tasks)); }, [tasks]);
   useEffect(() => { localStorage.setItem('planner:events', JSON.stringify(events)); }, [events]);
+
+  // Update check
+  const [updateAvailable, setUpdateAvailable] = useState<string | null>(null);
+  useEffect(() => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
+    fetch('https://raw.githubusercontent.com/boughstudio/Rone/main/version.json', { signal: controller.signal })
+      .then(r => r.json())
+      .then(data => { if (data.version && data.version !== CURRENT_VERSION) setUpdateAvailable(data.version); })
+      .catch(() => {})
+      .finally(() => clearTimeout(timer));
+  }, []);
 
   // Settings (must be before calendar — calFirstOffset/calWeekDays depend on settings.weekStartsMonday)
   const [settings, setSettings] = useState<AppSettings>(() => ({ ...defaultSettings, ...loadStored("planner_settings", {}) }));
@@ -938,7 +941,18 @@ export default function App() {
             <path style={{fill:"#3a3731"}} d="M365.1266,63.58731c0-20.61805,14.86266-36.27643,36.41269-36.27643,10.70961,0,18.87944,3.47722,25.16896,9.23261,8.30063,7.63026,12.18116,19.81687,11.91411,33.33333h-48.73011c1.477,7.90277,5.76085,12.72073,13.39111,12.72073,4.41465,0,7.63026-1.73861,9.50512-5.09047h24.49858c-1.477,6.15871-6.29496,12.18661-12.98779,16.47046-6.29496,4.01679-13.1186,5.7554-21.82254,5.7554-22.35666,0-37.35012-15.26052-37.35012-36.14563ZM389.89224,56.49117h23.56115c-1.06824-7.63026-5.35208-12.18116-11.37454-12.18116-6.96534,0-10.84587,4.68716-12.18661,12.18116Z"/>
           </svg>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-muted-foreground">1.0.0</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-muted-foreground">{CURRENT_VERSION}</span>
+              {updateAvailable && (
+                <button
+                  onClick={() => setUpdateAvailable(null)}
+                  className="text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium hover:bg-primary/30 transition-colors"
+                  title={`Version ${updateAvailable} available`}
+                >
+                  Update available
+                </button>
+              )}
+            </div>
             <Tooltip label="Settings" enabled={settings.showTooltips}>
               <button
                 onClick={() => setSettingsOpen(true)}

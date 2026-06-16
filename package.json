@@ -1,11 +1,15 @@
 {
-  "name": "@figma/my-make-file",
+  "name": "rone",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "main": "main.cjs",
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "build:renderer": "vite build",
+    "build:electron": "electron-builder --mac --universal",
+    "build": "vite build && electron-builder --mac --universal",
+    "start": "electron ."
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -67,6 +71,8 @@
   "devDependencies": {
     "@tailwindcss/vite": "4.1.12",
     "@vitejs/plugin-react": "4.7.0",
+    "electron": "^36.9.5",
+    "electron-builder": "^26.15.3",
     "tailwindcss": "4.1.12",
     "vite": "6.3.5",
     "vite-plugin-singlefile": "^2.3.3"
@@ -81,6 +87,33 @@
     },
     "react-dom": {
       "optional": true
+    }
+  },
+  "build": {
+    "appId": "studio.bough.rone",
+    "productName": "Rone",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "Planner.app/Contents/Resources/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "title": "Rone"
+    },
+    "files": [
+      "dist/**",
+      "main.cjs",
+      "version.json"
+    ],
+    "directories": {
+      "output": "release"
     }
   },
   "pnpm": {
