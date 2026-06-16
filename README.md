@@ -1,11 +1,10 @@
+# Rone
+Rone - project and task planner for Mac
 
-  # Desktop App Project Planner
+## Running the code
 
-  This is a code bundle for Desktop App Project Planner. The original project is available at https://www.figma.com/design/4OWBrcx9INhRoYTIFmoCV3/Desktop-App-Project-Planner.
+Run `npm i` to install the dependencies.
 
-  ## Running the code
+Run `npm run dev` to start the development server.
 
-  Run `npm i` to install the dependencies.
-
-  Run `npm run dev` to start the development server.
-  
+Run `npm run build` to build the single-file bundle for use with the Planner.app launcher.
