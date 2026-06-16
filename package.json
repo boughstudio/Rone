@@ -107,7 +107,8 @@
     },
     "dmg": {
       "title": "Rone",
-      "icon": "assets/icon.icns"
+      "icon": "assets/icon.icns",
+      "artifactName": "Rone.dmg"
     },
     "files": [
       "dist/**",
