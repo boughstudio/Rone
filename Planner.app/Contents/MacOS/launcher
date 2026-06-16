@@ -1,0 +1,2 @@
+#!/bin/bash
+open "/Users/paulmullen/apps/planner/dist/index.html"
