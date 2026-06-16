@@ -1208,7 +1208,7 @@ export default function App() {
                         <div
                           key={project.id}
                           className={`bg-card rounded-xl border border-border overflow-hidden flex flex-col${project.completed ? ' opacity-60' : ''}`}
-                          style={isCardOverdue ? { borderLeftWidth: '3px', borderLeftColor: 'var(--destructive)' } : {}}
+                          style={isCardOverdue ? { boxShadow: 'inset 2px 0 0 var(--destructive)' } : {}}
                         >
                           <div className="p-4 flex flex-col flex-1">
                             {/* Name + color dot + menu */}
