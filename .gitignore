@@ -47,6 +47,9 @@ lerna-debug.log*
 # Claude Code
 .claude/
 
+# Icon build artifacts
+assets/icon.iconset/
+
 # Cache
 .cache
 .parcel-cache

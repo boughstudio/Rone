@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build:icons": "bash scripts/make-icns.sh",
     "build:renderer": "vite build",
     "build:electron": "electron-builder --mac --universal",
-    "build": "vite build && electron-builder --mac --universal",
+    "build": "bash scripts/make-icns.sh && vite build && electron-builder --mac --universal",
     "start": "electron ."
   },
   "dependencies": {
@@ -94,7 +95,7 @@
     "productName": "Rone",
     "mac": {
       "category": "public.app-category.productivity",
-      "icon": "Planner.app/Contents/Resources/icon.icns",
+      "icon": "assets/icon.icns",
       "target": [
         {
           "target": "dmg",
@@ -105,7 +106,8 @@
       ]
     },
     "dmg": {
-      "title": "Rone"
+      "title": "Rone",
+      "icon": "assets/icon.icns"
     },
     "files": [
       "dist/**",
