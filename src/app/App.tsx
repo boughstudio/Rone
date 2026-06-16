@@ -82,7 +82,7 @@ const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","S
 
 // ── Version ───────────────────────────────────────────────────────────────────
 
-const CURRENT_VERSION = "1.0.0";
+const CURRENT_VERSION = "1.0.1";
 
 // ── Seed data ────────────────────────────────────────────────────────────────
 
