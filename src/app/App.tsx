@@ -427,7 +427,7 @@ export default function App() {
     const today = new Date().toISOString().slice(0, 10);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `planner-backup-${today}.json`;
+    a.download = `rone-backup-${today}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -941,18 +941,7 @@ export default function App() {
             <path style={{fill:"#3a3731"}} d="M365.1266,63.58731c0-20.61805,14.86266-36.27643,36.41269-36.27643,10.70961,0,18.87944,3.47722,25.16896,9.23261,8.30063,7.63026,12.18116,19.81687,11.91411,33.33333h-48.73011c1.477,7.90277,5.76085,12.72073,13.39111,12.72073,4.41465,0,7.63026-1.73861,9.50512-5.09047h24.49858c-1.477,6.15871-6.29496,12.18661-12.98779,16.47046-6.29496,4.01679-13.1186,5.7554-21.82254,5.7554-22.35666,0-37.35012-15.26052-37.35012-36.14563ZM389.89224,56.49117h23.56115c-1.06824-7.63026-5.35208-12.18116-11.37454-12.18116-6.96534,0-10.84587,4.68716-12.18661,12.18116Z"/>
           </svg>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs text-muted-foreground">{CURRENT_VERSION}</span>
-              {updateAvailable && (
-                <button
-                  onClick={() => setUpdateAvailable(null)}
-                  className="text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary font-medium hover:bg-primary/30 transition-colors"
-                  title={`Version ${updateAvailable} available`}
-                >
-                  Update available
-                </button>
-              )}
-            </div>
+            <span className="text-xs text-muted-foreground">{CURRENT_VERSION}</span>
             <button
               onClick={() => setSettingsOpen(true)}
               className={`p-1.5 rounded-lg transition-colors ${settingsOpen ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
@@ -961,6 +950,38 @@ export default function App() {
             </button>
           </div>
         </div>
+
+        {/* Update banner */}
+        {updateAvailable && (
+          <div className="flex items-center gap-3 px-4 lg:px-8 py-2.5 bg-amber-50 border-b border-amber-200">
+            <span className="text-xs font-medium text-amber-900 whitespace-nowrap flex-shrink-0">
+              Rone {updateAvailable} is available
+            </span>
+            <span className="text-xs text-amber-700 flex-1 text-center whitespace-nowrap">
+              Export your data before updating to keep it safe
+            </span>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                onClick={exportData}
+                className="text-xs px-3 py-1 rounded-md border border-amber-300 bg-amber-100 hover:bg-amber-200 text-amber-900 font-medium transition-colors"
+              >
+                Export data
+              </button>
+              <button
+                onClick={() => window.open('https://github.com/boughstudio/Rone/releases', '_blank')}
+                className="text-xs px-3 py-1 rounded-md bg-amber-500 hover:bg-amber-600 text-white font-medium transition-colors"
+              >
+                Download update
+              </button>
+            </div>
+            <button
+              onClick={() => setUpdateAvailable(null)}
+              className="p-1 rounded hover:bg-amber-100 text-amber-600 hover:text-amber-900 flex-shrink-0 transition-colors"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
+        )}
 
         <div className="p-4 lg:p-8">
 

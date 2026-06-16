@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu, shell } = require('electron')
 const path = require('path')
 
 app.setName('Rone')
@@ -18,6 +18,11 @@ function createWindow() {
 
   Menu.setApplicationMenu(null)
   win.loadFile(path.join(__dirname, 'dist', 'index.html'))
+
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url)
+    return { action: 'deny' }
+  })
 }
 
 app.whenReady().then(() => {
