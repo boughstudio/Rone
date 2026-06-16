@@ -968,7 +968,7 @@ export default function App() {
                 Export data
               </button>
               <button
-                onClick={() => window.open('https://github.com/boughstudio/Rone/releases', '_blank')}
+                onClick={() => window.open('https://github.com/boughstudio/Rone/releases/latest/download/Rone.dmg', '_blank')}
                 className="text-xs px-3 py-1 rounded-md bg-amber-500 hover:bg-amber-600 text-white font-medium transition-colors"
               >
                 Download update
